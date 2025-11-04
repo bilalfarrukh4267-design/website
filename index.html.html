@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FluxBrainAI - AI Automation Agency</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .bg-animation canvas {
+            display: block;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #8a2be2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(138, 43, 226, 0.5)); }
+            to { filter: drop-shadow(0 0 20px rgba(138, 43, 226, 0.8)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #8a2be2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            color: #000;
+            text-shadow: 0 0 20px rgba(138, 43, 226, 0.8), 0 0 40px rgba(138, 43, 226, 0.5);
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 24px;
+            color: #b0b0b0;
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .tagline {
+            font-size: 20px;
+            font-style: italic;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cta-button {
+            padding: 18px 45px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #667eea, #8a2be2);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover:before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(138, 43, 226, 0.5);
+        }
+
+        /* 3D Canvas Container */
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 100px 50px;
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0) 0%, rgba(26, 26, 46, 0.5) 100%);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #8a2be2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(26, 26, 46, 0.6);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 70%);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .service-card:hover:before {
+            opacity: 1;
+            transform: translate(25%, 25%);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(138, 43, 226, 0.8);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
+        }
+
+        .service-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-10px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-5px) rotate(-5deg); }
+        }
+
+        .service-card:hover .service-icon {
+            animation: iconSpin 0.5s ease-in-out;
+        }
+
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .service-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .service-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 100px 50px;
+            background: linear-gradient(180deg, rgba(26, 26, 46, 0.5) 0%, rgba(10, 10, 15, 0) 100%);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #8a2be2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .step h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 100px 50px;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            min-height: 350px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(138, 43, 226, 0.3));
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            border: 1px solid rgba(138, 43, 226, 0.4);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 15, 0.3);
+            transition: opacity 0.3s ease;
+        }
+
+        .portfolio-item:hover:before {
+            background: rgba(10, 10, 15, 0.6);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(138, 43, 226, 0.5);
+        }
+
+        .portfolio-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .portfolio-item h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .portfolio-item p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .portfolio-results {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(138, 43, 226, 0.4);
+        }
+
+        .portfolio-results strong {
+            color: #8a2be2;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 50px;
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0) 0%, rgba(26, 26, 46, 0.5) 100%);
+        }
+
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-intro {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 18px;
+            color: #b0b0b0;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            padding: 15px;
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8a2be2;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            text-align: center;
+            background: rgba(10, 10, 15, 0.9);
+            border-top: 1px solid rgba(138, 43, 226, 0.2);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .footer-item strong {
+            color: #667eea;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .footer-item a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-item a:hover {
+            color: #8a2be2;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            color: #667eea;
+            font-size: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #8a2be2;
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 20px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .services-grid,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-info {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <canvas id="bgCanvas"></canvas>
+    </div>
+
+    <nav>
+        <div class="logo">FluxBrainAI</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#portfolio">Case Studies</a></li>
+            <li><a href="#contact">Book a Demo</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div id="canvas-container"></div>
+        <div class="hero-content">
+            <h1>Welcome to FluxBrainAI</h1>
+            <p class="tagline">"Turning Workflows into Growth Engines."</p>
+            <p>We help businesses save time and scale faster through smart AI automations</p>
+            <a href="#contact" class="cta-button">Schedule a Call</a>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>AI Chatbots & Voice Agents</h3>
+                <p>Intelligent conversational AI that engages customers 24/7, handles appointments, and answers queries with natural language processing.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">⚡</div>
+                <h3>Workflow Automation</h3>
+                <p>Streamline your operations with custom automation solutions that eliminate repetitive tasks and boost productivity across all departments.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📊</div>
+                <h3>Lead Generation Systems</h3>
+                <p>Automated lead scraping and outreach workflows that deliver ready-to-contact prospects daily, saving hours of manual work.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🎯</div>
+                <h3>Appointment Automation</h3>
+                <p>Connect your CRM with scheduling tools for instant booking links, automated reminders, and seamless calendar management.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">📧</div>
+                <h3>AI Newsletter Agents</h3>
+                <p>Automated content curation and personalized email campaigns that maintain consistent communication with zero manual effort.</p>
+            </div>
+            <div class="service-card">
+                <div class="service-icon">🛠️</div>
+                <h3>Custom AI Solutions</h3>
+                <p>Tailored automation systems designed specifically for your unique business needs, workflows, and growth objectives.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <h2 class="section-title">Our Process</h2>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Discovery</h3>
+                <p>We analyze your business needs and identify automation opportunities</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Strategy</h3>
+                <p>Develop a custom AI solution tailored to your goals</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Implementation</h3>
+                <p>Deploy and integrate automation into your workflow</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Optimization</h3>
+                <p>Continuous monitoring and improvement for maximum results</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio" id="portfolio">
+        <h2 class="section-title">Case Studies</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-content">
+                    <h3>GHL To Calendly Appointment Booking</h3>
+                    <p>Helped a marketing agency automate their appointment booking by connecting GoHighLevel with Calendly. New leads instantly receive personalized booking links, and reminders are sent automatically.</p>
+                    <div class="portfolio-results">
+                        <p><strong>Results:</strong></p>
+                        <p>✓ 85% reduction in scheduling time</p>
+                        <p>✓ 50% increase in bookings</p>
+                        <p>✓ 5+ hours saved per week</p>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-content">
+                    <h3>Apollo Lead Scraper Automation</h3>
+                    <p>Built an automated lead scraper that pulls targeted prospects from Apollo based on industry, role, and location filters. The system stores leads in Google Sheets and triggers outreach workflows instantly.</p>
+                    <div class="portfolio-results">
+                        <p><strong>Results:</strong></p>
+                        <p>✓ 10x faster lead collection</p>
+                        <p>✓ Zero manual data entry</p>
+                        <p>✓ Consistent daily lead flow</p>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-content">
+                    <h3>Dental AI Voice Agent</h3>
+                    <p>Developed an AI voice agent for a dental clinic to handle incoming calls, confirm appointments, and answer patient questions. The agent recognizes intent and updates bookings in real-time.</p>
+                    <div class="portfolio-results">
+                        <p><strong>Results:</strong></p>
+                        <p>✓ 70% reduction in missed calls</p>
+                        <p>✓ Increased appointment confirmations</p>
+                        <p>✓ 24/7 patient experience</p>
+                    </div>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-content">
+                    <h3>AI Newsletter Agent For A Coach</h3>
+                    <p>Built an AI-powered newsletter agent for a business coach that automatically curated content, personalized emails, and sent weekly newsletters. The system analyzed engagement and adjusted accordingly.</p>
+                    <div class="portfolio-results">
+                        <p><strong>Results:</strong></p>
+                        <p>✓ 45% increase in open rates</p>
+                        <p>✓ 80% less content creation time</p>
+                        <p>✓ Consistent high-quality communication</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="section-title">Book a Demo / Schedule a Call</h2>
+        <div class="contact-container">
+            <p class="contact-intro">Ready to quit manual work and save money? Let's discuss how AI automation can transform your business.</p>
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone">
+                </div>
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company">
+                </div>
+                <div class="form-group">
+                    <label for="service">What are you interested in? *</label>
+                    <select id="service" required>
+                        <option value="">Select a service</option>
+                        <option value="chatbot">AI Chatbots & Voice Agents</option>
+                        <option value="workflow">Workflow Automation</option>
+                        <option value="leads">Lead Generation Systems</option>
+                        <option value="appointment">Appointment Automation</option>
+                        <option value="newsletter">AI Newsletter Agents</option>
+                        <option value="custom">Custom AI Solutions</option>
+                        <option value="general">General Inquiry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Tell us about your needs *</label>
+                    <textarea id="message" required placeholder="Describe your current challenges and what you'd like to automate..."></textarea>
+                </div>
+                <button type="submit" class="cta-button">Schedule My Demo</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">FluxBrainAI</div>
+            <p style="margin: 20px 0; color: #b0b0b0;">Turning Workflows into Growth Engines</p>
+            
+            <div class="footer-info">
+                <div class="footer-item">
+                    <strong>Email</strong>
+                    <a href="mailto:fluxbrainai@gmail.com">fluxbrainai@gmail.com</a>
+                </div>
+                <div class="footer-item">
+                    <strong>Phone</strong>
+                    <a href="tel:+923232332070">+92 323 2332070</a>
+                </div>
+                <div class="footer-item">
+                    <strong>Instagram</strong>
+                    <a href="https://instagram.com/fluxbrainai" target="_blank">@fluxbrainai</a>
+                </div>
+            </div>
+
+            <div class="social-links">
+                <a href="https://instagram.com/fluxbrainai" target="_blank" title="Instagram">📷</a>
+                <a href="mailto:fluxbrainai@gmail.com" title="Email">✉️</a>
+                <a href="tel:+923232332070" title="Call Us">📞</a>
+            </div>
+
+            <p style="margin-top: 30px; color: #666;">&copy; 2025 FluxBrainAI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Background Canvas Animation
+        const bgCanvas = document.getElementById('bgCanvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth;
+        bgCanvas.height = window.innerHeight;
+
+        const particles = [];
+        const particleCount = 100;
+
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * bgCanvas.width,
+                y: Math.random() * bgCanvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+
+        function animateBg() {
+            bgCtx.fillStyle = 'rgba(10, 10, 15, 0.05)';
+            bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+                bgCtx.beginPath();
+                bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                bgCtx.fillStyle = 'rgba(138, 43, 226, 0.5)';
+                bgCtx.fill();
+
+                particles.forEach(p2 => {
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        bgCtx.beginPath();
+                        bgCtx.moveTo(p.x, p.y);
+                        bgCtx.lineTo(p2.x, p2.y);
+                        bgCtx.strokeStyle = `rgba(138, 43, 226, ${0.2 * (1 - dist / 100)})`;
+                        bgCtx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateBg);
+        }
+
+        animateBg();
+
+        // Three.js 3D Animation
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x667eea,
+            emissive: 0x8a2be2,
+            specular: 0x764ba2,
+            shininess: 100,
+            wireframe: true
+        });
+
+        const torusKnot = new THREE.Mesh(geometry, material);
+        scene.add(torusKnot);
+
+        const light1 = new THREE.PointLight(0x667eea, 1, 100);
+        light1.position.set(10, 10, 10);
+        scene.add(light1);
+
+        const light2 = new THREE.PointLight(0x8a2be2, 1, 100);
+        light2.position.set(-10, -10, -10);
+        scene.add(light2);
+
+        camera.position.z = 30;
+
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+
+            torusKnot.rotation.x += 0.005;
+            torusKnot.rotation.y += 0.005;
+
+            renderer.render(scene, camera);
+        }
+
+        animate3D();
+
+        // Background 3D Particles
+        const bgScene = new THREE.Scene();
+        const bgCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const bgRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        bgRenderer.setSize(window.innerWidth, window.innerHeight);
+        bgRenderer.domElement.style.position = 'fixed';
+        bgRenderer.domElement.style.top = '0';
+        bgRenderer.domElement.style.left = '0';
+        bgRenderer.domElement.style.zIndex = '-1';
+        document.querySelector('.bg-animation').appendChild(bgRenderer.domElement);
+
+        // Create particle system
+        const particleGeometry = new THREE.BufferGeometry();
+        const particleCount2 = 1000;
+        const positions = new Float32Array(particleCount2 * 3);
+        const colors = new Float32Array(particleCount2 * 3);
+
+        for (let i = 0; i < particleCount2 * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 100;
+            positions[i + 1] = (Math.random() - 0.5) * 100;
+            positions[i + 2] = (Math.random() - 0.5) * 100;
+
+            const color = new THREE.Color();
+            color.setHSL(0.7 + Math.random() * 0.1, 0.8, 0.5);
+            colors[i] = color.r;
+            colors[i + 1] = color.g;
+            colors[i + 2] = color.b;
+        }
+
+        particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const particleMaterial = new THREE.PointsMaterial({
+            size: 0.5,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+        bgScene.add(particleSystem);
+
+        // Add floating geometries
+        const geometries = [];
+        const geomTypes = [
+            new THREE.OctahedronGeometry(2),
+            new THREE.TetrahedronGeometry(2),
+            new THREE.IcosahedronGeometry(2)
+        ];
+
+        for (let i = 0; i < 15; i++) {
+            const geom = geomTypes[Math.floor(Math.random() * geomTypes.length)];
+            const mat = new THREE.MeshPhongMaterial({
+                color: Math.random() > 0.5 ? 0x667eea : 0x8a2be2,
+                wireframe: true,
+                transparent: true,
+                opacity: 0.3
+            });
+            const mesh = new THREE.Mesh(geom, mat);
+            mesh.position.set(
+                (Math.random() - 0.5) * 80,
+                (Math.random() - 0.5) * 80,
+                (Math.random() - 0.5) * 80
+            );
+            mesh.rotation.set(
+                Math.random() * Math.PI,
+                Math.random() * Math.PI,
+                Math.random() * Math.PI
+            );
+            mesh.userData.rotationSpeed = {
+                x: (Math.random() - 0.5) * 0.02,
+                y: (Math.random() - 0.5) * 0.02,
+                z: (Math.random() - 0.5) * 0.02
+            };
+            geometries.push(mesh);
+            bgScene.add(mesh);
+        }
+
+        const bgLight1 = new THREE.PointLight(0x667eea, 2, 100);
+        bgLight1.position.set(20, 20, 20);
+        bgScene.add(bgLight1);
+
+        const bgLight2 = new THREE.PointLight(0x8a2be2, 2, 100);
+        bgLight2.position.set(-20, -20, -20);
+        bgScene.add(bgLight2);
+
+        const ambientLight = new THREE.AmbientLight(0x1a1a2e, 0.5);
+        bgScene.add(ambientLight);
+
+        bgCamera.position.z = 50;
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        function animateBg3D() {
+            requestAnimationFrame(animateBg3D);
+
+            // Rotate particle system
+            particleSystem.rotation.y += 0.001;
+            particleSystem.rotation.x += 0.0005;
+
+            // Animate geometries
+            geometries.forEach(mesh => {
+                mesh.rotation.x += mesh.userData.rotationSpeed.x;
+                mesh.rotation.y += mesh.userData.rotationSpeed.y;
+                mesh.rotation.z += mesh.userData.rotationSpeed.z;
+            });
+
+            // Camera follows mouse slightly
+            bgCamera.position.x += (mouseX * 5 - bgCamera.position.x) * 0.05;
+            bgCamera.position.y += (mouseY * 5 - bgCamera.position.y) * 0.05;
+            bgCamera.lookAt(bgScene.position);
+
+            bgRenderer.render(bgScene, bgCamera);
+        }
+
+        animateBg3D();
+
+        // Smooth Scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Form Submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Thank you for booking a demo! We will get back to you soon.');
+            e.target.reset();
+        });
+
+        // Window Resize Handler
+        window.addEventListener('resize', () => {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            bgCamera.aspect = window.innerWidth / window.innerHeight;
+            bgCamera.updateProjectionMatrix();
+            bgRenderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Scroll Animation for Nav
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(10, 10, 15, 0.95)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 15, 0.8)';
+            }
+        });
